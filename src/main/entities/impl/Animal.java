@@ -20,14 +20,18 @@ public class Animal extends Entity {
 
 	protected int generation;
 	protected String species;
-	protected float health; 	// 0 - 1
-	protected float food;		// 0 - 1
-	protected float water; 		// 0 - 1
-	protected float energy;		// 0 - 1
-	protected float fitness;	// 0 - 1
+	protected float health; 		// 0 - 1
+	protected float food;			// 0 - 1
+	protected float water; 			// 0 - 1
+	protected float energy;			// 0 - 1
+	protected float fitness;		// 0 - 1
 	protected float mass;
 	protected float age;
-	protected String gender;	// male or female
+	protected float eatUntil; 		// 0 - 1
+	protected float drinkUntil; 	// 0 - 1
+	protected float hungryLevel; 	// 0 - 1
+	protected float thirstyLevel; 	// 0 - 1
+	protected String gender;		// male or female
 	protected float smellingDistance;	// Same world units as size
 	protected float visionDistance;		// Same world units as size
 	protected int visionFOV;			// Field of view (in degrees)
@@ -51,20 +55,28 @@ public class Animal extends Entity {
 	protected AI ai = null;
 	
 	public Animal(int generation, String species, String gender, Color color, float size, float mass, 
-			float smellingDistance, float visionDistance, int visionFOV, Point2D center, AI ai) {
+			float smellingDistance, float visionDistance, int visionFOV, float eatUntil, float drinkUntil, float hungryLevel, float thirstyLevel, Point2D center, AI ai) {
 		super();
 		this.id = AnimalSingleton.getInstance().getNextCounter();
 		this.generation = generation;
 		this.species = species;
 		this.gender = gender;
 		this.color = color;
-		this.health = .8f;
-		this.food = .8f;
-		this.water = .9f;
-		this.energy = .8f;
-		this.fitness = .25f;
+		this.health = .5f + (float)Math.random() * .5f; // .5 - 1
+		this.food = .5f + (float)Math.random() * .5f; // .5 - 1
+		this.water = .5f + (float)Math.random() * .5f; // .5 - 1
+		this.energy = .5f + (float)Math.random() * .5f; // .5 - 1
+		this.fitness = .1f + (float)Math.random() * .4f; // .1 - .5
 		this.size = size;
 		this.mass = mass;
+		if (eatUntil > 1) eatUntil = 1; 
+		this.eatUntil = eatUntil;
+		if (drinkUntil > 1) drinkUntil = 1;
+		if (hungryLevel < 0) hungryLevel = 0;
+		this.hungryLevel = hungryLevel;
+		if (thirstyLevel < 0) thirstyLevel = 0;
+		this.thirstyLevel = thirstyLevel;
+		this.drinkUntil = drinkUntil;
 		this.smellingDistance = smellingDistance;
 		this.visionDistance = visionDistance;
 		this.visionFOV = visionFOV;
@@ -98,6 +110,10 @@ public class Animal extends Entity {
 		output += "Smell: " + String.format("%.2f", smellingDistance) + "\n";
 		output += "Vision: " + String.format("%.2f", visionDistance) + "\n";
 		output += "FOV: " + visionFOV + "\n";
+		output += "Eat Until: " + String.format("%.2f", eatUntil) + "\n";
+		output += "Drink Until: " + String.format("%.2f", drinkUntil) + "\n";
+		output += "Hungry Level: " + String.format("%.2f", hungryLevel) + "\n";
+		output += "Thirsty Level: " + String.format("%.2f", thirstyLevel) + "\n";
 		output += "Size: " + size + "\n";
 		output += "Age: " + String.format("%.2f", age) + "\n";
 		return output;
@@ -163,17 +179,22 @@ public class Animal extends Entity {
 		water = water + (speedHit / 2f) + timeHit;
 		
 		// Update health
+		if (health >= .2) {
+			health += (food * (health / 10000f));
+		}
+		/*
+		if (health >= .2) {
+			health += (food * .00005f);
+		}
 		if (health >= .5) {
-			health += (food * .0001f);
+			health += (food * .00005f);
 		}
-		if (health < .1) {
-			health -= .0001f;
-		}
+		*/
 		if (food <= 0) {
-			health -= .00005f;
+			health -= .00004f;
 		}
 		if (water <= 0) {
-			health -= .0002f;
+			health -= .00008f;
 		}
 		if (health <= 0) {
 			die();
@@ -390,19 +411,31 @@ public class Animal extends Entity {
 			}
 			
 			// Size
-			float childSize = MathUtil.getRandomNumWithinXPercentOfValues(a.getSize(), size, .1f);
+			float childSize = MathUtil.getRandomNumWithinXPercentOfValues(a.getSize(), size, .2f);
 			
 			// Mass
-			float childMass = MathUtil.getRandomNumWithinXPercentOfValues(a.getMass(), mass, .1f);
+			float childMass = MathUtil.getRandomNumWithinXPercentOfValues(a.getMass(), mass, .2f);
 			
 			// Smelling Distance
-			float childSmellingDistance = MathUtil.getRandomNumWithinXPercentOfValues(a.getSmellingDistance(), smellingDistance, .1f);
+			float childSmellingDistance = MathUtil.getRandomNumWithinXPercentOfValues(a.getSmellingDistance(), smellingDistance, .3f);
 			
 			// Vision Distance
-			float childVisionDistance = MathUtil.getRandomNumWithinXPercentOfValues(a.getVisionDistance(), visionDistance, .1f);
+			float childVisionDistance = MathUtil.getRandomNumWithinXPercentOfValues(a.getVisionDistance(), visionDistance, .3f);
 			
 			// Vision FOV
-			int childVisionFOV = Math.round(MathUtil.getRandomNumWithinXPercentOfValues(a.getVisionFOV(), visionFOV, .01f));
+			int childVisionFOV = Math.round(MathUtil.getRandomNumWithinXPercentOfValues(a.getVisionFOV(), visionFOV, .3f));
+			
+			// Eat Until
+			float childEatUntil = MathUtil.getRandomNumWithinXPercentOfValues(a.getEatUntil(), eatUntil, .2f);
+			
+			// Drink Until
+			float childDrinkUntil = MathUtil.getRandomNumWithinXPercentOfValues(a.getDrinkUntil(), drinkUntil, .2f);
+			
+			// Hungry Level
+			float childHungryLevel = MathUtil.getRandomNumWithinXPercentOfValues(a.getHungryLevel(), hungryLevel, .2f);
+			
+			// Thirsty Level
+			float childThirstyLevel = MathUtil.getRandomNumWithinXPercentOfValues(a.getThirstyLevel(), thirstyLevel, .2f);
 			
 			// Generation 
 			int childGeneration = generation + 1;
@@ -410,13 +443,13 @@ public class Animal extends Entity {
 				childGeneration = a.getGeneration() + 1;
 			}
 			
-			Animal p = new Animal(childGeneration, species, childGender, childColor, childSize, childMass, childSmellingDistance, childVisionDistance, childVisionFOV, offspringCenter, null);
+			Animal p = new Animal(childGeneration, species, childGender, childColor, childSize, childMass, childSmellingDistance, childVisionDistance, childVisionFOV, childEatUntil, childDrinkUntil, childHungryLevel, childThirstyLevel, offspringCenter, null);
 			AnimalSingleton.getInstance().addAnimal(p);
 		}
 	}
 	
 	public boolean isVerile() {
-		if (age >= 1 && age < 5 && health >= .5 && timeSinceLastBaby >= .5) {
+		if (age >= 1 && age < 5 && health >= .5 && timeSinceLastBaby >= .3) {
 			return true;
 		}
 		return false;
@@ -517,6 +550,38 @@ public class Animal extends Entity {
 
 	public boolean isDrinking() {
 		return drinking;
+	}
+
+	public float getEatUntil() {
+		return eatUntil;
+	}
+
+	public void setEatUntil(float eatUntil) {
+		this.eatUntil = eatUntil;
+	}
+
+	public float getDrinkUntil() {
+		return drinkUntil;
+	}
+
+	public void setDrinkUntil(float drinkUntil) {
+		this.drinkUntil = drinkUntil;
+	}
+
+	public float getHungryLevel() {
+		return hungryLevel;
+	}
+
+	public void setHungryLevel(float hungryLevel) {
+		this.hungryLevel = hungryLevel;
+	}
+
+	public float getThirstyLevel() {
+		return thirstyLevel;
+	}
+
+	public void setThirstyLevel(float thirstyLevel) {
+		this.thirstyLevel = thirstyLevel;
 	}
 
 	public void setDrinking(boolean drinking) {

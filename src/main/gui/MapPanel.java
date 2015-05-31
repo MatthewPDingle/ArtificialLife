@@ -199,6 +199,18 @@ public class MapPanel extends JPanel implements ComponentListener, Runnable {
 				String gender = "male";
 				if (Math.random() < .5f) gender = "female";
 				
+				float eatUntil = .6f + (float)Math.random() * .4f; // .6 - 1
+				float drinkUntil = .6f + (float)Math.random() * .4f;
+				
+				float hungryLevel = .05f + (float)Math.random() * .35f; // .05 - .4
+				float thirstyLevel = .05f + (float)Math.random() * .35f;
+				
+				float size = 5f + (float)Math.random() * 5f; // 5 - 10
+				float mass = size * 1.5f;
+				float smellingDistance = 60f + (float)Math.random() * 30f; // 60-90
+				float visionDistance = 150f + (float)Math.random() * 100f; // 150-250
+				float visionFOV = 100 + (float)Math.random() * 80f; // 100-180
+				
 				if (me.getButton() == MouseEvent.BUTTON1) {
 					// Make color
 					float r = .5f + ((float)Math.random() / 2f);
@@ -228,14 +240,14 @@ public class MapPanel extends JPanel implements ComponentListener, Runnable {
 					}
 			
 					Color c = new Color(r, g, b);
-					
+
 					Point2D wCenter = TransformUtil.screenToWorld(me.getPoint(), thisMapPanel.getSize(), currentWorldView);
-					Animal p = new Animal(1, "Gazelle", gender, c, 8f, 10f, 75f, 200f, 140, wCenter, null);
+					Animal p = new Animal(1, "Gazelle", gender, c, size, mass, smellingDistance, visionDistance, (int)visionFOV, eatUntil, drinkUntil, hungryLevel, thirstyLevel, wCenter, null);
 					animalSingleton.addAnimal(p);
 				}
 				if (me.getButton() == MouseEvent.BUTTON2) {
 					Point2D wCenter = TransformUtil.screenToWorld(me.getPoint(), thisMapPanel.getSize(), currentWorldView);
-					Animal p = new Animal(1, "Cheetah", "male", Color.ORANGE, 8f, 10f, 75f, 200f, 140, wCenter, new NaivePredator());
+					Animal p = new Animal(1, "Cheetah", "male", Color.ORANGE, size, mass, smellingDistance, visionDistance, (int)visionFOV, eatUntil, drinkUntil, hungryLevel, thirstyLevel, wCenter, new NaivePredator());
 					animalSingleton.addAnimal(p);
 				}
 				else if (me.getButton() == MouseEvent.BUTTON3) {
@@ -526,7 +538,7 @@ public class MapPanel extends JPanel implements ComponentListener, Runnable {
 						}
 					}
 				}
-				if (r.nextFloat() < .001) {
+				if (r.nextFloat() < .0015) {
 					System.out.println("adding random food");
 					double x = 5 + (Math.random() * ((double)MainUI.WORLD_WIDTH - 10));
 					double y = 5 + (Math.random() * ((double)MainUI.WORLD_HEIGHT - 10));
@@ -536,7 +548,7 @@ public class MapPanel extends JPanel implements ComponentListener, Runnable {
 				}
 				
 				// Add new water
-				if (r.nextFloat() < .00006) {
+				if (r.nextFloat() < .0001) {
 					System.out.println("adding water");
 					double x = 25 + (Math.random() * ((double)MainUI.WORLD_WIDTH - 50));
 					double y = 25 + (Math.random() * ((double)MainUI.WORLD_HEIGHT - 50));
@@ -562,7 +574,7 @@ public class MapPanel extends JPanel implements ComponentListener, Runnable {
 				// Update animal details chart
 				if (animalSingleton.getAnimals().size() > 0) {
 					JLayeredPane jlp = (JLayeredPane)thisMapPanel.getParent();
-					Component component = jlp.getComponentAt(new Point(0, 0)).getComponentAt(new Point(4, 315));
+					Component component = jlp.getComponentAt(new Point(0, 0)).getComponentAt(new Point(4, 475));
 					ChartPanel chartPanel = (ChartPanel)component;
 	
 					XYSeriesCollection dataset = new XYSeriesCollection();

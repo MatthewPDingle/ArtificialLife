@@ -16,7 +16,7 @@ public class RandomAI extends AI {
 		if (myself.isEating()) {
 			myself.eat();
 		}
-		if (myself.getFood() > .8f) {
+		if (myself.getFood() >= myself.getEatUntil()) {
 			myself.setEating(false);
 		}
 		
@@ -24,12 +24,12 @@ public class RandomAI extends AI {
 		if (myself.isDrinking()) {
 			myself.drink();
 		}
-		if (myself.getWater() > .95f) {
+		if (myself.getWater() >= myself.getDrinkUntil()) {
 			myself.setDrinking(false);
 		}
 		
 		// If thirsty, seek out water
-		if (myself.getWater() < .35f && !myself.isDrinking() && !myself.isEating()) {
+		if (myself.getWater() < myself.getThirstyLevel() && !myself.isDrinking() && !myself.isEating()) {
 			// Find nearest water
 			Water nearestWater = findNearestWater();
 			
@@ -59,7 +59,7 @@ public class RandomAI extends AI {
 			}
 		}
 		// If hungry, seek out food
-		if (myself.getFood() < .2f && !myself.isDrinking() && !myself.isEating()) {
+		if (myself.getFood() < myself.getHungryLevel() && !myself.isDrinking() && !myself.isEating()) {
 			// Find nearest food
 			Food nearestFood = findNearestFood();
 			

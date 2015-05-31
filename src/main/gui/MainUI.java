@@ -39,8 +39,8 @@ import constants.Constants;
 
 public class MainUI {
 
-	public static final int WINDOW_WIDTH = 1040;
-	public static final int WINDOW_HEIGHT = 840;
+	public static final int WINDOW_WIDTH = 1420;
+	public static final int WINDOW_HEIGHT = 1220;
 	public static final int SETTINGS_WIDTH = 200;
 	public static final int SETTINGS_HEIGHT = WINDOW_HEIGHT;
 	public static final int MAP_WIDTH = WINDOW_WIDTH - SETTINGS_WIDTH;
@@ -103,7 +103,7 @@ public class MainUI {
 			JLabel lblAnimalDetails = new JLabel();
 			lblAnimalDetails.setName("lblAnimalDetails");
 			lblAnimalDetails.setDoubleBuffered(true);
-			lblAnimalDetails.setText("Animal Details [press s]");
+			lblAnimalDetails.setText("Animals [a/s keys to switch]");
 			lblAnimalDetails.setSize(192, 15);
 			lblAnimalDetails.setLocation(4, 44);
 			
@@ -111,7 +111,7 @@ public class MainUI {
 			JTextArea txtAnimalDetails = new JTextArea();
 			txtAnimalDetails.setName("txtAnimalDetails");
 			txtAnimalDetails.setDoubleBuffered(false);
-			txtAnimalDetails.setSize(192, 244);
+			txtAnimalDetails.setSize(192, 404);
 			txtAnimalDetails.setLocation(4, 64);
 			txtAnimalDetails.setEditable(false);
 			txtAnimalDetails.setFocusable(false);
@@ -148,32 +148,32 @@ public class MainUI {
 			ChartPanel chartPanel = new ChartPanel(chart);
 			chartPanel.setBorder(border);
 			chartPanel.setSize(192, 200);
-			chartPanel.setLocation(4, 315);
+			chartPanel.setLocation(4, 475);
 			
 			// Add Animals Details Legend
 			JLabel lblHealth = new JLabel("Health");
 			lblHealth.setSize(40, 15);
-			lblHealth.setLocation(4, 520);
+			lblHealth.setLocation(4, 680);
 			lblHealth.setForeground(Constants.PURPLE);
 			
 			JLabel lblFood = new JLabel("Food");
 			lblFood.setSize(40, 15);
-			lblFood.setLocation(44, 520);
+			lblFood.setLocation(44, 680);
 			lblFood.setForeground(Constants.GREEN);
 			
 			JLabel lblWater = new JLabel("Water");
 			lblWater.setSize(40, 15);
-			lblWater.setLocation(75, 520);
+			lblWater.setLocation(75, 680);
 			lblWater.setForeground(Constants.BLUE);
 			
 			JLabel lblEnergy = new JLabel("Energy");
 			lblEnergy.setSize(40, 15);
-			lblEnergy.setLocation(114, 520);
+			lblEnergy.setLocation(114, 680);
 			lblEnergy.setForeground(Constants.ORANGE);
 			
 			JLabel lblFitness = new JLabel("Fitness");
 			lblFitness.setSize(44, 15);
-			lblFitness.setLocation(156, 520);
+			lblFitness.setLocation(156, 680);
 			lblFitness.setForeground(Constants.RED);
 			
 			final JCheckBox chkOlfaction = new JCheckBox("Show Olfaction");
@@ -183,7 +183,7 @@ public class MainUI {
 				}
 			});
 			chkOlfaction.setSize(160, 15);
-			chkOlfaction.setLocation(4, 540);
+			chkOlfaction.setLocation(4, 700);
 			chkOlfaction.setFocusable(false);
 			
 			final JCheckBox chkVision = new JCheckBox("Show Vision");
@@ -193,7 +193,7 @@ public class MainUI {
 				}
 			});
 			chkVision.setSize(160, 15);
-			chkVision.setLocation(4, 560);
+			chkVision.setLocation(4, 720);
 			chkVision.setFocusable(false);
 			
 			final JCheckBox chkSmoothVision = new JCheckBox("Smooth Vision");
@@ -203,7 +203,7 @@ public class MainUI {
 				}
 			});
 			chkSmoothVision.setSize(160, 15);
-			chkSmoothVision.setLocation(4, 580);
+			chkSmoothVision.setLocation(4, 740);
 			chkSmoothVision.setFocusable(false);
 			
 			final JCheckBox chkShowMovementVector = new JCheckBox("Show Movement Vector");
@@ -213,7 +213,7 @@ public class MainUI {
 				}
 			});
 			chkShowMovementVector.setSize(160, 15);
-			chkShowMovementVector.setLocation(4, 600);
+			chkShowMovementVector.setLocation(4, 760);
 			chkShowMovementVector.setFocusable(false);
 			
 			final JCheckBox chkFollowSelectedAnimal = new JCheckBox("Follow Selected Animal");
@@ -223,7 +223,7 @@ public class MainUI {
 				}
 			});
 			chkFollowSelectedAnimal.setSize(160, 15);
-			chkFollowSelectedAnimal.setLocation(4, 620);
+			chkFollowSelectedAnimal.setLocation(4, 780);
 			chkFollowSelectedAnimal.setFocusable(false);
 			
 			// Add the SettingsPanel
@@ -270,6 +270,7 @@ public class MainUI {
 			// Add crap to the JLayeredPane
 			jlp.add(settingsPanel);
 			jlp.add(mapPanel);
+			
 			jlp.addComponentListener(new ComponentAdapter() {
 				public void componentResized(ComponentEvent e) {
 					Component[] components = jlp.getComponents();
