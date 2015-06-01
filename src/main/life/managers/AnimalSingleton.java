@@ -7,7 +7,7 @@ import main.entities.impl.Animal;
 public class AnimalSingleton {
 
 	private ArrayList<Animal> animals = new ArrayList<Animal>();
-	private int detailsDisplayIndex = 0;
+	private int detailsDisplayId = 0;
 	private int counter = 0;
 	
 	private static AnimalSingleton instance = null;
@@ -34,35 +34,81 @@ public class AnimalSingleton {
 		if (animals.size() == 0) {
 			return null;
 		}
-		detailsDisplayIndex++;
-		if (detailsDisplayIndex >= animals.size()) {
-			detailsDisplayIndex = 0;
+		
+		int smallestPositiveDiff = 1000000;
+		int newDetailsDisplayId = detailsDisplayId;
+		
+		for (Animal animal : animals) {
+			int diff = animal.getID() - detailsDisplayId;
+			if (diff > 0 && diff < smallestPositiveDiff) {
+				smallestPositiveDiff = diff;
+				newDetailsDisplayId = animal.getID();
+			}
 		}
-		Animal a = animals.get(detailsDisplayIndex);
-		return a;
+		detailsDisplayId = newDetailsDisplayId;
+		if (smallestPositiveDiff == 1000000) {
+			int smallestId = 1000000;
+			for (Animal animal : animals) {
+				if (animal.getID() < smallestId) {
+					smallestId = animal.getID();
+				}
+			}
+			detailsDisplayId = smallestId;
+		}
+		
+		for (Animal animal : animals) {
+			if (animal.getID() == detailsDisplayId) {
+				return animal;
+			}
+		}
+		return null;
 	}
 	
 	public Animal getPrevious() {
 		if (animals.size() == 0) {
 			return null;
 		}
-		detailsDisplayIndex--;
-		if (detailsDisplayIndex < 0) {
-			detailsDisplayIndex = animals.size() - 1;
+		
+		int smallestPositiveDiff = 1000000;
+		int newDetailsDisplayId = detailsDisplayId;
+		
+		for (Animal animal : animals) {
+			int diff = detailsDisplayId - animal.getID();
+			if (diff > 0 && diff < smallestPositiveDiff) {
+				smallestPositiveDiff = diff;
+				newDetailsDisplayId = animal.getID();
+			}
 		}
-		Animal a = animals.get(detailsDisplayIndex);
-		return a;
+		detailsDisplayId = newDetailsDisplayId;
+		if (smallestPositiveDiff == 1000000) {
+			int biggestId = 0;
+			for (Animal animal : animals) {
+				if (animal.getID() > biggestId) {
+					biggestId = animal.getID();
+				}
+			}
+			detailsDisplayId = biggestId;
+		}
+		
+		for (Animal animal : animals) {
+			if (animal.getID() == detailsDisplayId) {
+				return animal;
+			}
+		}
+		return null;
 	}
 	
 	public Animal getCurrent() {
 		if (animals.size() == 0) {
 			return null;
 		}
-		if (detailsDisplayIndex >= animals.size()) {
-			detailsDisplayIndex = 0;
+
+		for (Animal animal : animals) {
+			if (detailsDisplayId == animal.getID()) {
+				return animal;
+			}
 		}
-		Animal a = animals.get(detailsDisplayIndex);
-		return a;
+		return getPrevious();
 	}
 
 	public int getNextCounter() {

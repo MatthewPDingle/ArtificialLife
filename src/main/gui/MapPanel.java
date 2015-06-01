@@ -205,7 +205,7 @@ public class MapPanel extends JPanel implements ComponentListener, Runnable {
 				float hungryLevel = .05f + (float)Math.random() * .35f; // .05 - .4
 				float thirstyLevel = .05f + (float)Math.random() * .35f;
 				
-				float size = 5f + (float)Math.random() * 5f; // 5 - 10
+				float size = 8f + (float)Math.random() * 4f; // 8 - 12
 				float mass = size * 1.5f;
 				float smellingDistance = 60f + (float)Math.random() * 30f; // 60-90
 				float visionDistance = 150f + (float)Math.random() * 100f; // 150-250
@@ -538,7 +538,7 @@ public class MapPanel extends JPanel implements ComponentListener, Runnable {
 						}
 					}
 				}
-				if (r.nextFloat() < .0015) {
+				if (r.nextFloat() < .0025) {
 					System.out.println("adding random food");
 					double x = 5 + (Math.random() * ((double)MainUI.WORLD_WIDTH - 10));
 					double y = 5 + (Math.random() * ((double)MainUI.WORLD_HEIGHT - 10));
@@ -548,7 +548,7 @@ public class MapPanel extends JPanel implements ComponentListener, Runnable {
 				}
 				
 				// Add new water
-				if (r.nextFloat() < .0001) {
+				if (r.nextFloat() < .0003) {
 					System.out.println("adding water");
 					double x = 25 + (Math.random() * ((double)MainUI.WORLD_WIDTH - 50));
 					double y = 25 + (Math.random() * ((double)MainUI.WORLD_HEIGHT - 50));
